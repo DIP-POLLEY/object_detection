@@ -14,20 +14,24 @@ class _LanguageScreenState extends State<LanguageScreen> {
   String selectedLanguage = 'ENGLISH';
   // String selectedLanguage;
 
+  void _changelang(String s) async{
+    SharedPreferences pf1 = await SharedPreferences.getInstance();
+    setState(() {
+      pf1.setString('lang', s);
+    });
 
+
+  }
   DropdownButton<String> androidDropdown() {
     List<DropdownMenuItem<String>> dropdownItems = [];
-    for (String currency in langList) {
+    for (String language in langList) {
       var newItem = DropdownMenuItem(
-        child: Text(currency),
-        value: currency,
+        child: Text(language),
+        value: language,
       );
       dropdownItems.add(newItem);
     }
-    void _changelang(String s) async{
-      SharedPreferences pf1 = await SharedPreferences.getInstance();
-      pf1.setString('lang', s);
-    }
+
     return DropdownButton<String>(
       value: selectedLanguage,
       items: dropdownItems,
@@ -43,8 +47,8 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
   CupertinoPicker iOSPicker() {
     List<Text> pickerItems = [];
-    for (String currency in langList) {
-      pickerItems.add(Text(currency));
+    for (String language in langList) {
+      pickerItems.add(Text(language));
     }
 
     return CupertinoPicker(
@@ -59,27 +63,11 @@ class _LanguageScreenState extends State<LanguageScreen> {
       children: pickerItems,
     );
   }
-  void _checklan()async{
-    SharedPreferences pf1 = await SharedPreferences.getInstance();
-    String lcode = pf1.getString('lang');
-    if(lcode!=Null)
-      {
-        setState(() {
-          selectedLanguage = lcode;
-        });
-      }
-    else
-      {
-        setState(() {
-          selectedLanguage = 'ENGLISH';
-          pf1.setString('lang', 'ENGLISH');
-        });
-      }
-  }
+
   @override
   void initState() {
     super.initState();
-    _checklan();
+    _changelang(selectedLanguage);
   }
   @override
   Widget build(BuildContext context) {
