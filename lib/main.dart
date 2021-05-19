@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:eyes/language_select.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'home.dart';
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      routes:{
+        'language_screen':(context)=>LanguageScreen(),
+      },
       title: 'RealTime Detection',
       home: HomePage(cameras),
     );

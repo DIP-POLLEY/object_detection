@@ -1,3 +1,4 @@
+import 'package:eyes/language_select.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:tflite/tflite.dart';
@@ -83,6 +84,14 @@ class _HomePageState extends State<HomePage> {
                 _model = "";
               });
             }),
+        actions:<Widget>[
+          IconButton(
+              icon: Icon(Icons.add_alert_sharp),
+              onPressed: () {
+                Navigator.pushNamed(context, 'language_screen');
+              }
+              ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: _model == ""

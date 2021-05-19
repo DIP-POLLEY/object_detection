@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter_tts/flutter_tts.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:translator/translator.dart';
+import 'constant.dart';
 
 class BndBox extends StatelessWidget {
   final FlutterTts flutterTts = FlutterTts();
+  final obj = GoogleTranslator();
 
   final List<dynamic> results;
   final int previewH;
@@ -22,10 +25,26 @@ class BndBox extends StatelessWidget {
   String k;
   Future _speaker() async
   {
-    await flutterTts.setLanguage("en");
-    await flutterTts.speak(k);
-    print("speaking");
+    SharedPreferences pf1 = await SharedPreferences.getInstance();
+    String lcode = pf1.getString('lang');
+    // await flutterTts.setLanguage('en');
+    // await flutterTts.speak(k);
+    k = "This is a "+k;
+    var trans = await obj.translate(k,to: klan[lcode]);
+    String query = trans.toString();
+    print(query);
+    await flutterTts.setLanguage(klan[lcode]);
+    await flutterTts.speak(query);
+    // print("speaking ${klan[lcode]}");
   }
+  // Future<String> _bi(String s)async
+  // {
+  //   final obj = GoogleTranslator();
+  //   var trans = await obj.translate(s,to: 'hi');
+  //   String query = trans.toString();
+  //   print("Here printing lcode $query");
+  //   return query;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +54,7 @@ class BndBox extends StatelessWidget {
         var _w = re["rect"]["w"];
         var _y = re["rect"]["y"];
         var _h = re["rect"]["h"];
+        // var wd = _bi(re["detectedClass"]).toString();
         var scaleW, scaleH, x, y, w, h;
 
         if (screenH / screenW > previewH / previewW) {
@@ -73,6 +93,8 @@ class BndBox extends StatelessWidget {
               ),
               child: Text(
                 "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
+                // _bi(re["detectedClass"]).toString(),
+                // wd,
 
                 style: TextStyle(
                   color: Color.fromRGBO(37, 213, 253, 1.0),
